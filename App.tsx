@@ -43,6 +43,7 @@ import {
   Settings,
   Check
 } from 'lucide-react';
+import { DestinationAttractionsMap } from './DestinationAttractionsMap';
 
 // ============================================================================
 // 1. TYPESCRIPT INTERFACES & DATA MODELS
@@ -125,10 +126,19 @@ export interface DestinationInfo {
   currency: string;
   timezone: string;
   featured?: boolean;
+  mapCenter: {
+    lat: number;
+    lng: number;
+  };
+  mapZoom: number;
   popularAttractions: {
     name: string;
     description: string;
     category: string;
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
   }[];
 }
 
@@ -271,21 +281,26 @@ const DESTINATIONS_DATA: DestinationInfo[] = [
     currency: 'IDR (Rupiah Indonesia)',
     timezone: 'WITA (UTC+8)',
     featured: true,
+    mapCenter: { lat: -8.6705, lng: 115.25 },
+    mapZoom: 10,
     popularAttractions: [
       {
         name: 'Tebing Kelingking & Pantai Diamond',
         description: 'Teluk biru kehijauan ikonik yang diapit formasi tebing kapur menjulang di Nusa Penida.',
-        category: 'Alam Pesisir'
+        category: 'Alam Pesisir',
+        coordinates: { lat: -8.751, lng: 115.4733 }
       },
       {
         name: 'Tegalalang & Dataran Tinggi Ubud',
         description: 'Sistem irigasi subak warisan UNESCO, desa pengrajin seni, dan resor kesehatan di tengah hutan.',
-        category: 'Budaya & Warisan'
+        category: 'Budaya & Warisan',
+        coordinates: { lat: -8.4312, lng: 115.2793 }
       },
       {
         name: 'Pura Luhur Uluwatu',
         description: 'Pura di atas tebing yang menghadap Samudra Hindia dengan pertunjukan tari Kecak saat matahari terbenam.',
-        category: 'Ikon Wisata'
+        category: 'Ikon Wisata',
+        coordinates: { lat: -8.8291, lng: 115.0849 }
       }
     ]
   },
@@ -309,21 +324,26 @@ const DESTINATIONS_DATA: DestinationInfo[] = [
     currency: 'IDR (Rupiah Indonesia)',
     timezone: 'WITA (UTC+8)',
     featured: true,
+    mapCenter: { lat: -8.555, lng: 119.54 },
+    mapZoom: 10,
     popularAttractions: [
       {
         name: 'Puncak Matahari Terbit Pulau Padar',
         description: 'Tiga teluk melengkung dengan pasir putih, hitam, dan merah muda dari puncak bukit vulkanik.',
-        category: 'Trekking Petualangan'
+        category: 'Trekking Petualangan',
+        coordinates: { lat: -8.6476, lng: 119.563 }
       },
       {
         name: 'Taman Nasional Komodo',
         description: 'Jelajah satwa liar dipandu ranger resmi di habitat alami kadal terbesar di dunia.',
-        category: 'Satwa Liar'
+        category: 'Satwa Liar',
+        coordinates: { lat: -8.5433, lng: 119.4883 }
       },
       {
         name: 'Manta Point & Taka Makassar',
         description: 'Hamparan pasir timbul jernih dan snorkeling berdampingan dengan ikan pari manta yang anggun.',
-        category: 'Bahari'
+        category: 'Bahari',
+        coordinates: { lat: -8.4744, lng: 119.5742 }
       }
     ]
   },
@@ -347,21 +367,26 @@ const DESTINATIONS_DATA: DestinationInfo[] = [
     currency: 'JPY (Yen Jepang)',
     timezone: 'JST (UTC+9)',
     featured: true,
+    mapCenter: { lat: 35.35, lng: 137.8 },
+    mapZoom: 6,
     popularAttractions: [
       {
         name: 'Fushimi Inari & Arashiyama',
         description: 'Ribuan gerbang torii merah menyala dan jalur hutan bambu yang menenangkan di Kyoto.',
-        category: 'Warisan Budaya'
+        category: 'Warisan Budaya',
+        coordinates: { lat: 34.9671, lng: 135.7727 }
       },
       {
         name: 'Gunung Fuji & Lembah Hakone',
         description: 'Pelayaran danau vulkanik dengan pemandangan ikonik puncak tertinggi di Jepang.',
-        category: 'Panorama Alam'
+        category: 'Panorama Alam',
+        coordinates: { lat: 35.3606, lng: 138.7274 }
       },
       {
         name: 'Asakusa & Shibuya Tokyo',
         description: 'Dari lampion bersejarah Kuil Senso-ji hingga pusat kuliner dan arsitektur modern.',
-        category: 'Eksplorasi Kota'
+        category: 'Eksplorasi Kota',
+        coordinates: { lat: 35.7148, lng: 139.7967 }
       }
     ]
   },
@@ -385,16 +410,20 @@ const DESTINATIONS_DATA: DestinationInfo[] = [
     currency: 'CHF (Franc Swiss)',
     timezone: 'CET (UTC+1)',
     featured: false,
+    mapCenter: { lat: 46.78, lng: 8.15 },
+    mapZoom: 8,
     popularAttractions: [
       {
         name: 'Jungfraujoch – Puncak Eropa',
         description: 'Perjalanan kereta bergerigi menuju stasiun kereta tertinggi di Eropa dan Gletser Aletsch.',
-        category: 'Kereta Alpen'
+        category: 'Kereta Alpen',
+        coordinates: { lat: 46.5475, lng: 7.9851 }
       },
       {
         name: 'Danau Lucerne & Gunung Pilatus',
         description: 'Pelayaran kapal melintasi danau Alpen yang jernih dipadukan panorama puncak Pilatus.',
-        category: 'Danau Panorama'
+        category: 'Danau Panorama',
+        coordinates: { lat: 47.0028, lng: 8.3082 }
       }
     ]
   },
@@ -417,16 +446,20 @@ const DESTINATIONS_DATA: DestinationInfo[] = [
     currency: 'IDR (Rupiah Indonesia)',
     timezone: 'WIB (UTC+7)',
     featured: false,
+    mapCenter: { lat: -8.07, lng: 112.935 },
+    mapZoom: 10,
     popularAttractions: [
       {
         name: 'Titik Pandang Sunrise Penanjakan',
         description: 'Panorama fajar spektakuler menghadap Gunung Bromo, Batok, dan Semeru.',
-        category: 'Gunung Berapi'
+        category: 'Gunung Berapi',
+        coordinates: { lat: -7.9163, lng: 112.9502 }
       },
       {
         name: 'Air Terjun Tumpak Sewu',
         description: 'Air terjun bertingkat menyerupai tirai raksasa yang dikelilingi tebing tropis Lumajang.',
-        category: 'Petualangan'
+        category: 'Petualangan',
+        coordinates: { lat: -8.2302, lng: 112.9173 }
       }
     ]
   }
@@ -1869,6 +1902,7 @@ export function App() {
   // Global Modals & Toasts
   const [legalModal, setLegalModal] = useState<'terms' | 'privacy' | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [selectedAttractionIndex, setSelectedAttractionIndex] = useState<number | null>(null);
 
   const showToast = useCallback((message: string, type: ToastMessage['type'] = 'info') => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
@@ -1989,6 +2023,7 @@ export function App() {
   };
 
   const openDestinationDetail = (destinationId: string) => {
+    setSelectedAttractionIndex(null);
     setStandalone({ type: 'destination', destinationId });
   };
 
@@ -2357,16 +2392,66 @@ export function App() {
             </div>
 
             <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs space-y-3">
-              <h3 className="text-sm font-bold text-slate-900">Daya Tarik Populer</h3>
-              {dest.popularAttractions.map((attr, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-xs font-bold text-slate-900">{attr.name}</span>
-                    <Badge variant="ocean">{attr.category}</Badge>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">{attr.description}</p>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#136F99]" />
+                  <h3 className="text-sm font-bold text-slate-900">Peta & Daya Tarik Populer</h3>
                 </div>
-              ))}
+                <Badge variant="neutral">Koordinat Placeholder</Badge>
+              </div>
+
+              <DestinationAttractionsMap
+                destinationId={dest.id}
+                destinationName={dest.name}
+                center={dest.mapCenter}
+                defaultZoom={dest.mapZoom}
+                attractions={dest.popularAttractions}
+                selectedIndex={selectedAttractionIndex}
+                onSelectAttraction={setSelectedAttractionIndex}
+              />
+
+              <p className="text-[11px] text-slate-500">
+                Ketuk pin pada peta atau pilih kartu atraksi di bawah untuk menyorot lokasi (koordinat placeholder).
+              </p>
+
+              <div className="space-y-2">
+                {dest.popularAttractions.map((attr, idx) => {
+                  const isSelected = selectedAttractionIndex === idx;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setSelectedAttractionIndex(isSelected ? null : idx)}
+                      className={`w-full text-left p-3 rounded-xl border transition ${
+                        isSelected
+                          ? 'bg-[#E7F3F8]/60 border-[#136F99] ring-1 ring-[#136F99]/30'
+                          : 'bg-slate-50 border-slate-100 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span
+                            className={`w-5 h-5 rounded-full text-[11px] font-extrabold inline-flex items-center justify-center shrink-0 ${
+                              isSelected ? 'bg-[#D97706] text-white' : 'bg-[#0B2545] text-white'
+                            }`}
+                          >
+                            {idx + 1}
+                          </span>
+                          <span className="text-xs font-bold text-slate-900 truncate">{attr.name}</span>
+                        </div>
+                        <Badge variant="ocean">{attr.category}</Badge>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-relaxed pl-7">{attr.description}</p>
+                      <div className="mt-1.5 pl-7 flex items-center gap-1 text-[10px] font-mono text-slate-500">
+                        <MapPin className="w-3 h-3 text-[#136F99]" />
+                        <span>
+                          {attr.coordinates.lat.toFixed(4)}, {attr.coordinates.lng.toFixed(4)}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div>
